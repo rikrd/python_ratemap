@@ -8,5 +8,5 @@ import ratemap
 if __name__ == '__main__':
     rate, x = wavfile.read('example.wav')
     y = ratemap.ratemap(x, rate, numchans=32)
-    plt.imshow(np.flipud(y), cmap = cm.Greys)
+    plt.imshow(np.flipud(y), cmap=m.Greys)
     plt.show()
