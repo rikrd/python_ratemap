@@ -2,6 +2,7 @@
 
 import ctypes
 import os
+import math
 from numpy.ctypeslib import ndpointer
 
 
@@ -25,8 +26,8 @@ def ratemap(x, fs, lowcf=50.0, highcf=3500.0, numchans=32, frameshift=10.0,
     xarray_type = ctypes.c_double * numsamples
     carray_type = ctypes.c_char * len(compression)
 
-    frameshift_samples = int((frameshift * fs / 1000) + 0.5);
-    numframes = (int)(1.0 + numsamples / frameshift_samples);
+    frameshift_samples = int((frameshift * fs / 1000) + 0.5)
+    numframes = math.ceil(numsamples / frameshift_samples)
 
     program_dirname = os.path.dirname(os.path.realpath(__file__))
     _libratemap = ctypes.CDLL(program_dirname + '/libratemap.so')
