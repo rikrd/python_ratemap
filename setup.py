@@ -4,7 +4,7 @@ libratemap = Extension('ratemap/libratemap',
                        sources=['ratemap/ratemap.c'])
 
 setup(name='Ratemap',
-      version='1.0',
+      version='1.1',
       description='A Python ctypes wrapper around Ning''s ratemap implementation.',
       ext_modules=[libratemap],
       packages=find_packages(),
