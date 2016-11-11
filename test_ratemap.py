@@ -12,6 +12,14 @@ def test_ratemap():
     plt.show()
 
 
+def test_synthesize_ratemap():
+    rate, x = wavfile.read('example.wav')
+    for compression in ['cuberoot', 'log']:
+        y = ratemap.ratemap_for_synthesis(x, rate, numchans=32, compression=compression)
+        x_hat = ratemap.synthesize_ratemap(x, rate, y, numchans=32, compression=compression)
+        wavfile.write('example_resynth_{}.wav'.format(compression), rate, x_hat)
+
+
 def test_gammatone():
     rate, x = wavfile.read('example.wav')
     bm, env, instp, instf = ratemap.gammatone(x, rate, 150.0)
@@ -20,5 +28,6 @@ def test_gammatone():
 
 
 if __name__ == '__main__':
-    test_gammatone()
-    test_ratemap()
+    # test_gammatone()
+    # test_ratemap()
+    test_synthesize_ratemap()
