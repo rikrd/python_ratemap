@@ -82,9 +82,9 @@
  */
 
 
-double* ratemap(double *x, int nsamples, int fs, double lowcf, double highcf, int numchans, double frameshift, double ti, char* compression)
+void ratemap(double *x, int nsamples, int fs, double lowcf, double highcf, int numchans, double frameshift, double ti, char* compression, double* result)
 {
-  double *ratemap, *senv;
+  double *senv;
   int i, j, chan;
   int nsamples_padded, frameshift_samples, numframes;
   double lowErb, highErb, spaceErb, cf;
@@ -116,7 +116,6 @@ double* ratemap(double *x, int nsamples, int fs, double lowcf, double highcf, in
 
   /* Allocate memory for ratemap and smoothed envelope */
   senv = (double*) malloc(nsamples_padded * sizeof(double));
-  ratemap = (double*) malloc(numchans * numframes * sizeof(double));
 
   tpt = 2 * M_PI / fs;
   intdecay = exp(-(1000.0/(fs*ti)));
@@ -212,23 +211,21 @@ double* ratemap(double *x, int nsamples, int fs, double lowcf, double highcf, in
       {
         sumEnv += senv[i];
       }
-      ratemap[chan+numchans*j] = intgain * sumEnv / frameshift_samples;
+      result[chan+numchans*j] = intgain * sumEnv / frameshift_samples;
     }
   }
 
   if (strcmp(compression, "cuberoot") == 0)
   {
     for (i=0; i<numchans*numframes; i++)
-      ratemap[i] = pow(ratemap[i], 0.3);
+      result[i] = pow(result[i], 0.3);
   }
   else if (strcmp(compression, "log") == 0)
   {
     for (i=0; i<numchans*numframes; i++)
-      ratemap[i] = 20 * log10(ratemap[i]);
+      result[i] = 20 * log10(result[i]);
   }
 
   free(senv);
-
-  return ratemap;
 };
 
