@@ -148,10 +148,9 @@ def synthesize_ratemap(x, fs, ratemap,
     cf = make_erb_cfs(lowcf, highcf, numchans)
 
     # TODO: Check that this framer is consistent to the one in gammatone.c
-    winoverlap = 1 / 4.
     winsize = int(round(fs * winlength / 1000.))  # in samples
     win = hamming_win(winsize)
-    win4 = round(winsize * winoverlap)
+    win4 = round(winsize / 4.)
     frameshift_samples = get_round(fs * frameshift / 1000.)
     num_frames = int(math.floor(numsamples / frameshift_samples) - math.ceil(winsize / frameshift_samples) + 1)
 
@@ -182,7 +181,7 @@ def synthesize_ratemap(x, fs, ratemap,
             # If we use the energy of the window size here, we obtain worse results
             energy_src = np.sqrt(sum((bm[idx1:idx2]) ** 2))
             energy_tgt = ratemap_decomp[frame, c]
-            energy_win = np.sqrt(sum(win[:framelen] ** 2)) * winoverlap
+            energy_win = np.sqrt(sum(win[:framelen] ** 2)) / 4.
 
             # TODO: Check what correct energy normalization procedure we should be doing
 
@@ -218,9 +217,8 @@ def ratemap_for_synthesis(x, fs,
 
     # TODO: Check why use ones for analysis and Hamming for synthesis
     # win = hamming_win(winsize)
-    winoverlap = 1 / 4.
     win = np.ones(winsize)
-    win4 = round(winsize * winoverlap)
+    win4 = round(winsize / 4)
     frameshift_samples = get_round(fs * frameshift / 1000.)
     num_frames = int(math.floor(numsamples / frameshift_samples) - math.ceil(winsize / frameshift_samples) + 1)
 
