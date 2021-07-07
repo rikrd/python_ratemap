@@ -30,6 +30,7 @@ def ratemap(x, fs, lowcf=50.0, highcf=3500.0, numchans=32, frameshift=10.0,
     numsamples = len(x)
     xarray_type = ndpointer(float, flags='aligned, contiguous')
     oarray_type = ndpointer(float, ndim=2, flags='aligned, contiguous, writeable')
+    compression = compression.encode('utf-8')
     carray_type = ctypes.c_char * len(compression)
 
     frameshift_samples = get_round(frameshift * float(fs) / 1000)

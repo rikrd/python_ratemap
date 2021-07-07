@@ -29,5 +29,5 @@ def test_gammatone():
 
 if __name__ == '__main__':
     # test_gammatone()
-    # test_ratemap()
+    test_ratemap()
     test_synthesize_ratemap()
